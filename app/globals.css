@@ -4,6 +4,8 @@
 
 :root {
   color-scheme: light;
+  scrollbar-color: #bf4a2b #f1e0c4;
+  scrollbar-width: thin;
 }
 
 html {
@@ -28,4 +30,27 @@ a {
 
 ::selection {
   background: rgba(191, 74, 43, 0.18);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1e0c4;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid #f1e0c4;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d46b3f 0%, #8f3924 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #e07a48 0%, #a64028 100%);
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1e0c4;
 }

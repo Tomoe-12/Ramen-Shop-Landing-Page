@@ -1,9 +1,17 @@
+"use client";
+
+import { useState } from "react";
+
 type MenuItem = {
   name: string;
   price: string;
   description: string;
   tag: string;
+  category: string;
   icon: "bowl" | "chili" | "leaf" | "spark";
+  photo: string;
+  ingredients: string[];
+  detail: string;
 };
 
 const menu: MenuItem[] = [
@@ -11,62 +19,168 @@ const menu: MenuItem[] = [
     name: "Theory Tonkotsu",
     price: "$18",
     description:
-      "Silky 18-hour pork broth, chashu, black garlic oil, ajitama, scallions.",
+      "Our signature bowl built on a silky 18-hour pork broth with deep collagen body, thin springy noodles, torch-finished chashu, black garlic oil, ajitama, scallions, and a final hit of toasted sesame.",
     tag: "Best Seller",
+    category: "Signature Ramen",
     icon: "bowl",
+    photo:
+      "https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "18-hour pork broth",
+      "Thin ramen noodles",
+      "Torch-finished chashu",
+      "Black garlic oil",
+      "Ajitama egg",
+      "Scallions",
+      "Toasted sesame",
+    ],
+    detail:
+      "This is the bowl most first-timers become loyal to. It starts rich and silky, then opens up with smoky pork, sweet scallion, and that savory black garlic finish that lingers in the best way.",
   },
   {
     name: "Spicy Miso Collapse",
     price: "$17",
     description:
-      "Miso broth with chili crunch, sesame, roasted corn, ground pork, butter.",
+      "A richer, spicier ramen with savory miso broth, house chili crunch, roasted corn, seasoned ground pork, butter, sesame, and noodles that soak up every last spoonful of heat.",
     tag: "Hot",
+    category: "Spicy Bowls",
     icon: "chili",
+    photo:
+      "https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Savory miso broth",
+      "House chili crunch",
+      "Roasted corn",
+      "Seasoned ground pork",
+      "Butter",
+      "Sesame",
+      "Ramen noodles",
+    ],
+    detail:
+      "A deeper, hotter bowl built for guests who want richness first and heat second. The butter softens the spice while the corn and sesame round everything out.",
   },
   {
     name: "Tokyo Shoyu Classic",
     price: "$16",
     description:
-      "Clear soy broth, chicken chashu, bamboo shoots, nori, crispy shallots.",
+      "A clean and balanced soy broth layered with chicken chashu, bamboo shoots, nori, crispy shallots, scallions, and a lighter finish for guests who want something elegant but still comforting.",
     tag: "Classic",
+    category: "Tokyo Classics",
     icon: "spark",
+    photo:
+      "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Clear shoyu broth",
+      "Chicken chashu",
+      "Bamboo shoots",
+      "Nori",
+      "Crispy shallots",
+      "Scallions",
+    ],
+    detail:
+      "Lighter on the palate but still deeply savory, this bowl leans on clarity and balance. It is the one we recommend when someone wants classic Tokyo ramen energy.",
   },
   {
     name: "Citrus Shio Garden",
     price: "$16",
     description:
-      "Light sea-salt broth with yuzu, spinach, tofu puffs, and snap peas.",
+      "Bright sea-salt broth lifted with yuzu and packed with spinach, tofu puffs, snap peas, mushrooms, and scallions for a bowl that feels fresh, fragrant, and still fully satisfying.",
     tag: "Veg Friendly",
+    category: "Garden Bowls",
     icon: "leaf",
+    photo:
+      "https://images.unsplash.com/photo-1512003867696-6d5ce6835040?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Sea-salt broth",
+      "Yuzu",
+      "Spinach",
+      "Tofu puffs",
+      "Snap peas",
+      "Mushrooms",
+      "Scallions",
+    ],
+    detail:
+      "Fresh, aromatic, and a little brighter than the rest of the menu. The yuzu keeps it lively while the greens and tofu make it feel complete rather than like a compromise.",
   },
   {
     name: "Midnight Mazemen",
     price: "$15",
     description:
-      "Brothless noodles, tare, slow-cooked pork, confit mushrooms, soft egg.",
+      "Brothless noodles tossed in a glossy tare with slow-cooked pork, confit mushrooms, soft egg, scallions, garlic chips, and enough umami to make it the first thing late-night regulars order.",
     tag: "Late Night",
+    category: "After Dark",
     icon: "spark",
+    photo:
+      "https://images.unsplash.com/photo-1637024696628-02cb19cc1829?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Brothless tare sauce",
+      "Thick noodles",
+      "Slow-cooked pork",
+      "Confit mushrooms",
+      "Soft egg",
+      "Scallions",
+      "Garlic chips",
+    ],
+    detail:
+      "Dense, glossy, and intensely savory, this is the bowl for people who love noodles more than broth. Stir everything together and every bite gets richer.",
   },
   {
     name: "Karaage Basket",
     price: "$11",
-    description: "Double-fried soy-ginger chicken with kewpie lime slaw.",
+    description:
+      "Double-fried soy-ginger chicken with a shattering crisp crust, juicy center, kewpie lime slaw, and a squeeze of lemon that makes it impossible to stop at one piece.",
     tag: "Crunchy",
+    category: "Side Plates",
     icon: "spark",
+    photo:
+      "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Soy-ginger marinated chicken",
+      "Crispy coating",
+      "Kewpie lime slaw",
+      "Fresh lemon",
+    ],
+    detail:
+      "The outside stays loud and crisp while the inside stays juicy. It is the kind of side plate that accidentally becomes the center of the table.",
   },
   {
     name: "Gyoza Theory",
     price: "$9",
-    description: "Pork and napa dumplings with charred chili soy dipping sauce.",
+    description:
+      "Pan-seared pork and napa dumplings with crisp bottoms, tender centers, and a charred chili soy dipping sauce that brings smoky heat without overpowering the filling.",
     tag: "Share Plate",
+    category: "Small Bites",
     icon: "bowl",
+    photo:
+      "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Pork filling",
+      "Napa cabbage",
+      "Pan-seared wrappers",
+      "Charred chili soy sauce",
+    ],
+    detail:
+      "Golden bottoms, juicy centers, and just enough char to feel like they came straight from the hottest part of the pan. Best ordered for the table, even if you keep them to yourself.",
   },
   {
     name: "Matcha Milk Jam Toast",
     price: "$8",
-    description: "Thick-cut milk bread with matcha cream and black sesame brittle.",
+    description:
+      "Thick-cut toasted milk bread layered with matcha cream, soft milk jam, black sesame brittle, and a pinch of sea salt for a sweet finish that still feels grown-up.",
     tag: "Sweet Finish",
+    category: "Dessert",
     icon: "leaf",
+    photo:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+    ingredients: [
+      "Milk bread",
+      "Matcha cream",
+      "Milk jam",
+      "Black sesame brittle",
+      "Sea salt",
+    ],
+    detail:
+      "Soft, creamy, nutty, and just sweet enough. It lands like dessert for people who still want a little balance after a rich bowl of ramen.",
   },
 ];
 
@@ -166,6 +280,24 @@ function SparkIcon() {
   );
 }
 
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current">
+      <path d="M6 6 18 18" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M18 6 6 18" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowUpRightIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current">
+      <path d="M8 16 16 8" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M9 8h7v7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function IconBadge({ icon }: { icon: MenuItem["icon"] }) {
   const iconMap = {
     bowl: <BowlIcon />,
@@ -175,13 +307,15 @@ function IconBadge({ icon }: { icon: MenuItem["icon"] }) {
   };
 
   return (
-    <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f5dfb6] text-ember">
+    <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f5dfb6] text-ember">
       {iconMap[icon]}
     </span>
   );
 }
 
 export default function Home() {
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+
   return (
     <main className="bg-cream text-ink">
       <section className="relative isolate overflow-hidden">
@@ -198,7 +332,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(245,223,182,0.2),_transparent_34%),radial-gradient(circle_at_bottom_right,_rgba(217,157,63,0.22),_transparent_28%)]" />
         <div className="absolute -left-20 top-28 h-48 w-48 rounded-full border border-white/20" />
         <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-16 pt-6 text-cream md:px-10 lg:px-12">
-          <header className="flex items-center justify-between border-b border-white/15 pb-4">
+          <header className="flex flex-col items-start gap-4 border-b border-white/15 pb-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-display text-3xl tracking-[0.2em]">NOODLE THEORY</p>
               <p className="text-sm uppercase tracking-[0.32em] text-cream/70">
@@ -207,7 +341,7 @@ export default function Home() {
             </div>
             <a
               href="#visit"
-              className="rounded-full border border-white/25 px-4 py-2 text-sm font-medium transition hover:bg-white/10"
+              className="inline-flex min-h-11 items-center rounded-full border border-white/25 px-5 py-2 text-sm font-medium transition hover:bg-white/10"
             >
               Visit Tonight
             </a>
@@ -262,17 +396,17 @@ export default function Home() {
             </div>
 
             <div className="grid gap-4">
-              <div className="grid gap-4 sm:grid-cols-[1.05fr_0.95fr]">
-                <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-card backdrop-blur">
+              <div className="grid auto-rows-fr gap-4 md:grid-cols-[1.05fr_0.95fr] lg:grid-cols-1 xl:grid-cols-[1.05fr_0.95fr]">
+                <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-card backdrop-blur sm:h-full">
                   <img
                     src="https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?auto=format&fit=crop&w=900&q=80"
                     alt="Signature ramen bowl with egg and chashu"
-                    className="h-[22rem] w-full object-cover"
+                    className="h-[22rem] w-full object-cover sm:h-full"
                   />
                 </div>
                 <div className="grid gap-4">
                   <div className="rounded-[2rem] border border-white/15 bg-[#f6ead5] p-5 text-ink shadow-card">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <p className="font-display text-3xl">Tonight&apos;s Pour</p>
                       <span className="rounded-full bg-ember px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cream">
                         House Pick
@@ -301,7 +435,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                 {[
                   ["House-made noodles", "Cut fresh every morning"],
                   ["Small room energy", "Counter seats with vinyl soundtrack"],
@@ -411,31 +545,65 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
+          <div id="menu-grid" className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {menu.map((item) => (
               <article
                 key={item.name}
-                className="rounded-[2rem] border border-[#e8d3b6] bg-white p-6 shadow-card transition hover:-translate-y-1"
+                className="overflow-hidden rounded-[2.2rem] border border-[#e8d3b6] bg-white shadow-card transition hover:-translate-y-1"
               >
-                <div className="flex items-start gap-4">
-                  <IconBadge icon={item.icon} />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="font-display text-3xl text-ink">{item.name}</h3>
-                      <p className="rounded-full bg-ink px-4 py-2 text-sm font-bold text-cream">
-                        {item.price}
-                      </p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedItem(item)}
+                  className="group block w-full text-left"
+                >
+                  <div className="relative overflow-hidden bg-[linear-gradient(180deg,_#f3dfbe_0%,_#ead0a4_100%)] p-3">
+                    <div className="overflow-hidden rounded-[1.7rem]">
+                      <img
+                        src={item.photo}
+                        alt={item.name}
+                        className="h-72 w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
                     </div>
-                    <div className="mt-3 flex flex-wrap items-center gap-3">
-                      <span className="rounded-full bg-[#f9f1e3] px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-ember">
+                    <div className="absolute right-6 top-6 rounded-bl-2xl rounded-tr-2xl bg-white px-4 py-2 text-xl font-bold text-ink shadow-[0_10px_30px_rgba(35,24,21,0.12)]">
+                      {item.price}
+                    </div>
+                    <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-3">
+                      <span className="rounded-full bg-[#6f8d43] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white">
                         {item.tag}
+                      </span>
+                      <span className="inline-flex items-center gap-2 rounded-full bg-white/92 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-ink">
+                        View Dish
+                        <ArrowUpRightIcon />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8a736a]">
+                          {item.category}
+                        </p>
+                        <h3 className="mt-2 font-display text-4xl text-ink">{item.name}</h3>
+                      </div>
+                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f5dfb6] text-ember">
+                        <ArrowUpRightIcon />
                       </span>
                     </div>
                     <p className="mt-4 max-w-lg text-sm leading-7 text-[#5e504c]">
                       {item.description}
                     </p>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {item.ingredients.slice(0, 4).map((ingredient) => (
+                        <span
+                          key={ingredient}
+                          className="rounded-full bg-[#f5f0e6] px-3 py-2 text-xs text-[#6a5b55]"
+                        >
+                          {ingredient}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </button>
               </article>
             ))}
           </div>
@@ -563,6 +731,78 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {selectedItem ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#231815]/70 p-4 backdrop-blur-sm">
+          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-auto rounded-[2rem] bg-white shadow-card">
+            <button
+              type="button"
+              onClick={() => setSelectedItem(null)}
+              aria-label="Close menu details"
+              className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white"
+            >
+              <CloseIcon />
+            </button>
+            <div className="grid lg:grid-cols-[1fr_0.9fr]">
+              <div className="min-h-[20rem]">
+                <img
+                  src={selectedItem.photo}
+                  alt={selectedItem.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-4">
+                  <IconBadge icon={selectedItem.icon} />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-ember">
+                      {selectedItem.tag}
+                    </p>
+                    <h3 className="font-display text-5xl text-ink">{selectedItem.name}</h3>
+                  </div>
+                </div>
+                <p className="mt-4 inline-flex rounded-full bg-ink px-4 py-2 text-sm font-bold text-cream">
+                  {selectedItem.price}
+                </p>
+                <p className="mt-6 text-base leading-8 text-[#564844]">
+                  {selectedItem.detail}
+                </p>
+                <div className="mt-8">
+                  <p className="text-sm font-bold uppercase tracking-[0.24em] text-ember">
+                    Ingredients
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    {selectedItem.ingredients.map((ingredient) => (
+                      <span
+                        key={ingredient}
+                        className="rounded-full border border-[#e7d3ba] bg-[#f9f1e3] px-4 py-2 text-sm text-[#5e504c]"
+                      >
+                        {ingredient}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-8 rounded-[1.5rem] bg-[#f7efe2] p-5">
+                  <p className="text-sm font-bold uppercase tracking-[0.24em] text-ember">
+                    Kitchen Note
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[#64524d]">
+                    Every bowl is finished to order so broth, toppings, and noodles
+                    arrive at their best texture. Ask for pickup if you want this one
+                    packed for the ride home.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            aria-label="Close menu details"
+            onClick={() => setSelectedItem(null)}
+            className="absolute inset-0 -z-10 cursor-default"
+          />
+        </div>
+      ) : null}
     </main>
   );
 }
