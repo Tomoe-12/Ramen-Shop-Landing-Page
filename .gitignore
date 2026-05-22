@@ -5,3 +5,4 @@ dist
 .vercel
 *.log
 pnpm-debug.log*
+mobile-screenshot.png
